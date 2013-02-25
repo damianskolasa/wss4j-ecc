@@ -589,6 +589,7 @@ public class WSSecSignature extends WSSecSignatureBase {
      * @param algo the name of the signature algorithm
      * @see WSConstants#RSA
      * @see WSConstants#DSA
+     * @see WSConstants#ECDSA_SHA1
      */
     public void setSignatureAlgorithm(String algo) {
         sigAlgo = algo;
