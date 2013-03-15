@@ -554,6 +554,7 @@ public class WSSecSignature extends WSSecSignatureBase {
             
             signatureValue = sig.getSignatureValue().getValue();
         } catch (Exception ex) {
+        	ex.printStackTrace();
             log.error(ex);
             throw new WSSecurityException(
                 WSSecurityException.FAILED_SIGNATURE, null, null, ex

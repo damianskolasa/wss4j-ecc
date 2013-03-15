@@ -126,6 +126,39 @@ public class SignatureAlgorithmSuiteTest extends org.junit.Assert {
     }
     
     @org.junit.Test
+    public void testSignatureMethodECDSA() throws Exception {
+        Crypto dsaCrypto = CryptoFactory.getInstance("wssECC40.properties");
+        
+        WSSecSignature builder = new WSSecSignature();
+        builder.setUserInfo("wss40DSA", "security");
+        builder.setKeyIdentifierType(WSConstants.ISSUER_SERIAL);
+        builder.setSignatureAlgorithm(WSConstants.ECDSA_SHA1);
+
+        Document doc = SOAPUtil.toSOAPPart(SOAPUtil.SAMPLE_SOAP_MSG);
+        WSSecHeader secHeader = new WSSecHeader();
+        secHeader.insertSecurityHeader(doc);
+        Document signedDoc = builder.build(doc, dsaCrypto, secHeader);
+
+        if (LOG.isDebugEnabled()) {
+            String outputString = 
+                XMLUtils.PrettyDocumentToString(signedDoc);
+            LOG.debug(outputString);
+        }
+        
+        Element securityHeader = WSSecurityUtil.getSecurityHeader(signedDoc, null);
+        AlgorithmSuite algorithmSuite = createAlgorithmSuite();
+        
+        try {
+            verify(securityHeader, algorithmSuite, dsaCrypto);
+            fail("Expected failure as ECDSA_SHA1 is not allowed");
+        } catch (WSSecurityException ex) {
+            // expected
+        }
+        
+        algorithmSuite.addSignatureMethod(WSConstants.ECDSA_SHA1);
+        verify(securityHeader, algorithmSuite, dsaCrypto);
+    }
+    @org.junit.Test
     public void testSymmetricKey() throws Exception {
         
         KeyGenerator keyGen = KeyGenerator.getInstance("AES");
