@@ -130,7 +130,7 @@ public class SignatureAlgorithmSuiteTest extends org.junit.Assert {
         Crypto dsaCrypto = CryptoFactory.getInstance("wssECC40.properties");
         
         WSSecSignature builder = new WSSecSignature();
-        builder.setUserInfo("wss40DSA", "security");
+        builder.setUserInfo("ecdsakey", "123456");
         builder.setKeyIdentifierType(WSConstants.ISSUER_SERIAL);
         builder.setSignatureAlgorithm(WSConstants.ECDSA_SHA1);
 
@@ -156,7 +156,7 @@ public class SignatureAlgorithmSuiteTest extends org.junit.Assert {
         }
         
         algorithmSuite.addSignatureMethod(WSConstants.ECDSA_SHA1);
-        verify(securityHeader, algorithmSuite, dsaCrypto);
+        verify(securityHeader, createECDSAAlgorithmSuite(), dsaCrypto);
     }
     @org.junit.Test
     public void testSymmetricKey() throws Exception {
@@ -288,6 +288,16 @@ public class SignatureAlgorithmSuiteTest extends org.junit.Assert {
         
         algorithmSuite.addDigestAlgorithm(WSConstants.SHA256);
         verify(securityHeader, algorithmSuite, crypto);
+    }
+    
+    private AlgorithmSuite createECDSAAlgorithmSuite() {
+        AlgorithmSuite algorithmSuite = new AlgorithmSuite();
+        algorithmSuite.addSignatureMethod(WSConstants.ECDSA_SHA1);
+        algorithmSuite.setMinimumAsymmetricKeyLength(128);
+        algorithmSuite.addC14nAlgorithm(WSConstants.C14N_EXCL_OMIT_COMMENTS);
+        algorithmSuite.addDigestAlgorithm(WSConstants.SHA1);
+        
+        return algorithmSuite;
     }
     
     private AlgorithmSuite createAlgorithmSuite() {

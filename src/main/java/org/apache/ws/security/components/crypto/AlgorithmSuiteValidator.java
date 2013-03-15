@@ -22,6 +22,7 @@ package org.apache.ws.security.components.crypto;
 import java.security.PublicKey;
 import java.security.cert.X509Certificate;
 import java.security.interfaces.DSAPublicKey;
+import java.security.interfaces.ECPublicKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.Set;
 
@@ -30,6 +31,7 @@ import javax.xml.crypto.dsig.Transform;
 import javax.xml.crypto.dsig.XMLSignature;
 
 import org.apache.ws.security.WSSecurityException;
+import org.bouncycastle.asn1.eac.ECDSAPublicKey;
 
 /**
  * Validate signature/encryption/etc. algorithms against an AlgorithmSuite policy.
@@ -183,6 +185,15 @@ public class AlgorithmSuiteValidator {
             }
         } else if (publicKey instanceof DSAPublicKey) {
             int length = ((DSAPublicKey)publicKey).getParams().getP().bitLength();
+            if (length < algorithmSuite.getMinimumAsymmetricKeyLength()
+                || length > algorithmSuite.getMaximumAsymmetricKeyLength()) {
+                LOG.debug(
+                    "The asymmetric key length does not match the requirement"
+                );
+                throw new WSSecurityException(WSSecurityException.INVALID_SECURITY);
+            }
+        } else if (publicKey instanceof ECPublicKey) {
+            int length = ((ECPublicKey)publicKey).getParams().getGenerator().getAffineX().bitLength();
             if (length < algorithmSuite.getMinimumAsymmetricKeyLength()
                 || length > algorithmSuite.getMaximumAsymmetricKeyLength()) {
                 LOG.debug(

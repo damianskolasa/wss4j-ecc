@@ -1,5 +1,6 @@
 package org.apache.ws.security.message;
 
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.math.BigInteger;
 import java.security.KeyPair;
@@ -19,10 +20,15 @@ import javax.security.auth.x500.X500Principal;
 import org.bouncycastle.asn1.ASN1InputStream;
 import org.bouncycastle.asn1.DERObjectIdentifier;
 import org.bouncycastle.asn1.x509.X509Extensions;
+import org.bouncycastle.jcajce.provider.asymmetric.ec.BCECPrivateKey;
+import org.bouncycastle.jcajce.provider.asymmetric.ec.ECUtil;
 import org.bouncycastle.jce.ECNamedCurveTable;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.bouncycastle.jce.spec.ECNamedCurveSpec;
 import org.bouncycastle.jce.spec.ECParameterSpec;
 import org.bouncycastle.x509.X509V3CertificateGenerator;
+
+import sun.security.ec.ECParameters;
 
 public class GenerateECDSAKEyPair {
 	
@@ -33,7 +39,6 @@ public class GenerateECDSAKEyPair {
 		Date expiryDate = calTo.getTime();             // time after which certificate is not valid
 		BigInteger serialNumber = new BigInteger("2");     // serial number for certificate
 		KeyPair keyPair = generateECDSAKeyPair();             // EC public/private key pair
-
 		
 		X509V3CertificateGenerator certGen = new X509V3CertificateGenerator();
 		X500Principal              dnName = new X500Principal("CN=Test CA Certificate");
@@ -53,7 +58,7 @@ public class GenerateECDSAKEyPair {
 		String certPubAlg = cert.getPublicKey().getAlgorithm();
 		
 		KeyStore.PrivateKeyEntry pke = new KeyStore.PrivateKeyEntry(keyPair.getPrivate(), (Certificate[]) Arrays.asList(cert).toArray());
-		KeyStore ks = KeyStore.getInstance("JKS");
+		KeyStore ks = KeyStore.getInstance("PKCS12", "BC");
 		ks.load(null);
 		
 		ks.setCertificateEntry("ECDSACert", cert);
@@ -62,6 +67,12 @@ public class GenerateECDSAKEyPair {
 		ks.store(fos, "123456".toCharArray());
 		fos.flush();
 		fos.close();
+		
+		KeyStore kk = KeyStore.getInstance("PKCS12", "BC");
+		kk.load(new FileInputStream("/home/damian/wssECC40.jks"), "123456".toCharArray());
+		System.out.println(kk.getKey("ecdsakey", "123456".toCharArray()));
+		
+		
 		
 		
 	}
@@ -93,12 +104,16 @@ public class GenerateECDSAKEyPair {
 		System.out.println(pair.getPrivate().getClass());*/
 		
 		ECParameterSpec ecSpec = ECNamedCurveTable.getParameterSpec("prime192v1");
-
+		DERObjectIdentifier curveOid = ECUtil.getNamedCurveOid("prime192v1");
 		KeyPairGenerator g = KeyPairGenerator.getInstance("EC", "BC");
 
 		g.initialize(ecSpec, new SecureRandom());
 
+		
 		KeyPair pair = g.generateKeyPair();
+		
+		BCECPrivateKey bcecpk = (BCECPrivateKey) pair.getPrivate();
+		
 		return pair;
 	
 	}
@@ -106,6 +121,7 @@ public class GenerateECDSAKEyPair {
 	public static void main(String[] args) throws Exception {
 		Security.addProvider(new BouncyCastleProvider());
 		new GenerateECDSAKEyPair().gent();
+		//new GenerateECDSAKEyPair().generateECDSAKeyPair();
 	}
 
 }
