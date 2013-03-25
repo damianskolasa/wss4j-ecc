@@ -138,6 +138,10 @@ public class SignatureAlgorithmSuiteTest extends org.junit.Assert {
         WSSecHeader secHeader = new WSSecHeader();
         secHeader.insertSecurityHeader(doc);
         Document signedDoc = builder.build(doc, dsaCrypto, secHeader);
+        
+        String outputString1 = 
+                XMLUtils.PrettyDocumentToString(signedDoc);
+        System.out.println(outputString1);
 
         if (LOG.isDebugEnabled()) {
             String outputString = 
