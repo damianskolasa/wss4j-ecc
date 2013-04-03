@@ -290,7 +290,7 @@ public class SignatureAlgorithmSuiteTest extends org.junit.Assert {
         verify(securityHeader, algorithmSuite, crypto);
     }
     
-    private AlgorithmSuite createECDSAAlgorithmSuite() {
+    public static AlgorithmSuite createECDSAAlgorithmSuite() {
         AlgorithmSuite algorithmSuite = new AlgorithmSuite();
         algorithmSuite.addSignatureMethod(WSConstants.ECDSA_SHA1);
         algorithmSuite.setMinimumAsymmetricKeyLength(128);
@@ -300,7 +300,7 @@ public class SignatureAlgorithmSuiteTest extends org.junit.Assert {
         return algorithmSuite;
     }
     
-    private AlgorithmSuite createAlgorithmSuite() {
+    public static AlgorithmSuite createAlgorithmSuite() {
         AlgorithmSuite algorithmSuite = new AlgorithmSuite();
         algorithmSuite.addSignatureMethod(WSConstants.RSA_SHA1);
         algorithmSuite.setMinimumAsymmetricKeyLength(512);

@@ -122,6 +122,12 @@ public final class WSConstants {
         "http://www.w3.org/2000/09/xmldsig#rsa-sha1";
     public static final String ECDSA_SHA1 = 
     	"http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha1";
+    public static final String ECDSA_SHA256 = 
+        	"http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256";
+    public static final String ECDSA_SHA384 = 
+        	"http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha384";
+    public static final String ECDSA_SHA512 = 
+        	"http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha512";
     public static final String SHA1 = 
         "http://www.w3.org/2000/09/xmldsig#sha1";
     public static final String SHA256 =

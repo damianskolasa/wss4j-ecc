@@ -22,7 +22,7 @@
     <artifactId>wss4j</artifactId>
     <packaging>bundle</packaging>
     <name>Apache WSS4J</name>
-    <version>1.6.9</version>
+    <version>1.6.9-mod1</version>
     <description>
         The Apache WSS4J project provides a Java implementation of the primary security standards 
         for Web Services, namely the OASIS Web Services Security (WS-Security) specifications 
@@ -369,7 +369,7 @@
         <xmlsec.version>1.5.3</xmlsec.version>
         <opensaml.version>2.5.1-1</opensaml.version>
         <xml.apis.version>1.3.04</xml.apis.version>
-        <bcprov.version>1.47</bcprov.version>
+        <bcprov.version>1.48-mod</bcprov.version>
         <commons.logging.version>1.1.1</commons.logging.version>
         <xalan.version>2.7.1</xalan.version>
         <xerces.version>2.9.1</xerces.version>

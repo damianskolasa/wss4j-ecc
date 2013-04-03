@@ -31,7 +31,6 @@ import javax.xml.crypto.dsig.Transform;
 import javax.xml.crypto.dsig.XMLSignature;
 
 import org.apache.ws.security.WSSecurityException;
-import org.bouncycastle.asn1.eac.ECDSAPublicKey;
 
 /**
  * Validate signature/encryption/etc. algorithms against an AlgorithmSuite policy.
