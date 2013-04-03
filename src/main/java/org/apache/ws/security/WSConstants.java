@@ -132,6 +132,10 @@ public final class WSConstants {
         "http://www.w3.org/2000/09/xmldsig#sha1";
     public static final String SHA256 =
         "http://www.w3.org/2001/04/xmlenc#sha256";
+    public static final String SHA384 =
+            "http://www.w3.org/2001/04/xmlenc#sha384";
+    public static final String SHA512 =
+            "http://www.w3.org/2001/04/xmlenc#sha512";
     public static final String HMAC_SHA1 = 
         "http://www.w3.org/2000/09/xmldsig#hmac-sha1";
     public static final String HMAC_SHA256 = 
